@@ -4,12 +4,13 @@ from typing import Dict, Any, List, Optional
 class OCRConfidenceScoreSpellcheckRegularizer:
     """
     Repairs common optical character recognition (OCR) transcription artifacts,
-    such as 'rn' -> 'm', digit-letter confusions ('0' vs 'O', '1' vs 'l'), and ligature splitting.
+    such as 'rn' -> 'm', digit-letter confusions ('0' vs 'O', '1' vs 'l' or 't'), and ligature splitting.
     """
     COMMON_OCR_GLYPH_FIXES = [
         (r"\brn(?=[aeiou])", "m"),
         (r"(\d+)O(\d+)", r"\g<1>0\g<2>"),
         (r"\b([A-Z]+)0([A-Z]+)\b", r"\g<1>O\g<2>"),
+        (r"\b([a-z]+)1(em|em|ing|ion)\b", r"\g<1>t\g<2>"),
         (r"\b([a-z]+)1([a-z]+)\b", r"\g<1>l\g<2>"),
         (r"ﬁ", "fi"),
         (r"ﬂ", "fl"),
